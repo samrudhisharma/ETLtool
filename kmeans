@@ -1,0 +1,244 @@
+/*
+Kmeans
+*/
+package trykmeans;
+import java.util.*;
+import java.math.*;
+
+public class TryKmeans {
+    
+    public static void main(String[] args) {
+        // TODO code application logic here
+        
+        Scanner sc=new Scanner(System.in);
+        
+        System.out.println("enter the no of elements");
+        int maxsiz =sc.nextInt();
+        int a[] =new int[maxsiz];
+        System.out.println("enter the elements");
+        for(int i=0;i&lt;maxsiz;i++)
+        a[i]=sc.nextInt();
+        
+        System.out.println("enter the no of clusters");
+        int k=sc.nextInt();
+        int count =0;
+        int d1[][]=new int[k][28];
+        int z1=3;
+        if(maxsiz&lt;=10 && k==2)
+        z1=5;
+        if(maxsiz&lt;=10 && k==3)         z1=4;
+        if(maxsiz&gt;10 && k==2)
+        z1=7;
+        if(maxsiz&gt;10 && k==3)
+        z1=5;
+        
+        for(int j=0;j&lt;k;j++ )
+        {
+            int pre = count;
+            for(int i =0;i&lt;28;i++ )
+            {
+                if (count==(pre+z1))
+                {
+                    break;
+                }
+                else
+                {
+                    if(count &lt; maxsiz )
+                    {
+                        d1[j][i] = a[count];
+                        count ++;
+                    }
+                    else
+                    break;
+                }
+            }
+        }
+        for(int p=0;p&lt;k;p++)
+        {
+            for(int f=0;f&lt;28;f++)
+            {
+                if(d1[p][f]!=0)
+                {
+                    System.out.print(d1[p][f]+" ");
+                }
+            }
+            System.out.println();
+        }
+        int col[]=new int[k];
+        float av1=0;
+        int l=0;
+        int p=0;
+        int h=0;
+        float avg[] = new float [k];
+        float m1[]=new float[k];
+        float ol[]=new float[k];
+        for(int m= 0;m&lt;k;m++)
+        {
+            av1 = 0;
+            for(int n=0;n&lt;28;n++)
+            {
+                if(d1[m][n]!=0)
+                {
+                    col[m]=col[m]+1;
+                }
+                av1 += d1[m][n];
+            }
+            avg[m] = av1/col[m];
+        }
+        for(int s=0;s&lt;k;s++)
+        {
+            System.out.println("The Average of cluster"+ s+"  " + avg[s]+" ");
+            ol[s]=avg[s];
+        }
+        
+        int so;
+        do
+        {
+            so=0;
+            
+            for(int v=0;v&lt;k;v++)
+            {
+                for(int g=0;g&lt;28;g++)
+                {
+                    d1[v][g]=0;
+                }
+            }
+            int pos=0;
+            int prev=0;
+            int t=0;
+            int d=0;
+            for(int c=0;c&lt;maxsiz;c++)
+            {
+                for(int q=0;q&lt;k;q++)
+                {
+                    m1[q]=ol[q]-a[c];
+                    if(m1[q]&lt;0)
+                    {
+                        m1[q]=-m1[q];
+                    }
+                }
+                float min=m1[0];
+                for(int i=0;i&lt;k;i++)
+                {                        if(min&gt;=m1[i])
+                    {
+                        min=m1[i];
+                        pos=i;
+                    }
+                    
+                }
+                d1[pos][d]=a[c];
+                d++;
+            }
+            for(int y=0;y&lt;k;y++)
+            {
+                for(int z=0;z&lt;28;z++)
+                {
+                    if(d1[y][z]!=0)
+                    {
+                        System.out.print(d1[y][z]+" ");
+                    }
+                }
+                System.out.println();
+            }
+            float av2=0;
+            int l2=0;
+            int p2=0;
+            int h2=0;
+            float avg2[] = new float [k];
+            float col1[]=new float[k];
+            for(int m3= 0;m3&lt;k;m3++)
+            {
+                av2 = 0;
+                for(int n2=0;n2&lt;28;n2++)
+                {
+                    if(d1[m3][n2]!=0)
+                    {
+                        col1[m3]=col1[m3]+1;
+                    }
+                    av2 += d1[m3][n2];
+                }
+                avg2[m3] = av2/col1[m3];
+            }
+            for(int s2=0;s2&lt;k;s2++)
+            {
+                System.out.println("The Average of cluster"+ s2+"  " + avg2[s2]+" ");
+                if(ol[s2]==avg2[s2])
+                {
+                    so++;
+                }
+            }
+            for(int s=0;s&lt;k;s++)
+            {
+                ol[s]=avg2[s];
+            }
+        }while(so!=k);
+    }
+}
+Input:
+Alprazolam Cold 200 affordable
+Lisinopril Allergy 700 expensive
+Singulair Cancer 2000 expensive
+Glyburide Acidity 400 affordable
+Lorazepam Acidity 2100 expensive
+Lovaza Cold 100 cheap
+Ventolin  Acidity 300 affordable
+Sertraline  Cancer 3000 expensive
+Losartan  Acidity 70 cheap
+Lexapro Cold 210 affordable
+Zolpidem  Allergy 600 expensive
+Pravastatin  Cold 60 cheap
+Vyvanse Allergy 700 expensive
+Oxycodone Cancer 4000 expensive
+Endocet Allergy 220 affordable
+Trazodone Acidity 50 cheap
+Citalopram Acidity 60 cheap
+Lisinopril Cold 240 affordable
+Cephalexin Cancer 6000 expensive
+Diazepam Cold 200 affordable
+Glipizide Cancer 2500 expensive
+Hydrocodone Acidity 260 affordable
+Atenolol Acidity 230 affordable
+Lorazepam Cold 970 expensive
+Seroquel Cancer 4200 expensive
+Atenolal Acidity 200 affordable
+Lorazepom Cold 50 cheap
+Seroquyl Cancer 4500 expensive
+Output:
+enter the no of clusters
+3
+200 700 2000 400 2100 100 300 3000 70
+210 600 60 700 4000 220 50 60 240
+6000 200 2500 260 230 970 4200 200 50
+The Average of cluster0  985.55554
+The Average of cluster1  682.2222
+The Average of cluster2  1623.3334
+970
+200 700 400 100 300 70 210 600 60 700 220 50 60 240 200 260 230 200 50
+2000 2100 3000 4000 6000 2500 4200 4500
+The Average of cluster0  970.0
+The Average of cluster1  255.26315
+The Average of cluster2  3537.5
+700 2000 2100 700 970
+200 400 100 300 70 210 600 60 220 50 60 240 200 260 230 200 50
+3000 4000 6000 2500 4200 4500
+The Average of cluster0  1294.0
+The Average of cluster1  202.94118
+The Average of cluster2  4033.3333
+2000 2100 2500 970
+200 700 400 100 300 70 210 600 60 700 220 50 60 240 200 260 230 200 50
+3000 4000 6000 4200 4500
+The Average of cluster0  1892.5
+The Average of cluster1  255.26315
+The Average of cluster2  4340.0
+2000 2100 3000 2500
+200 700 400 100 300 70 210 600 60 700 220 50 60 240 200 260 230 970 200 50
+4000 6000 4200 4500
+The Average of cluster0  2400.0
+The Average of cluster1  291.0
+The Average of cluster2  4675.0
+2000 2100 3000 2500
+200 700 400 100 300 70 210 600 60 700 220 50 60 240 200 260 230 970 200 50
+4000 6000 4200 4500
+The Average of cluster0  2400.0
+The Average of cluster1  291.0
+The Average of cluster2  4675.0
