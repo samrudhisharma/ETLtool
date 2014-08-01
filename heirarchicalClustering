@@ -1,0 +1,234 @@
+/*
+Agglomerative Hierarchical clustering algorithm or AGNES (agglomerative nesting) for Extract Transform Load Tool (ETL) project.
+*/
+packagetryheirheir;
+importjava.util.*;
+import java.io.*;
+public class TryHeirheir {
+    Scanner sc = new Scanner(System.in);
+    static File f = new File(".");
+    public static void main(String[] args) {
+        try
+        {
+            //The input is extracted from .txt file here
+            String dest = f.getCanonicalPath()+File.separator+"destF.txt";
+            File fin1 = new File(dest);
+            FileInputStream fis1 = new FileInputStream(fin1);
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(fis1));
+            intno_attr = 0;
+            intno_row = 0;
+            String fileArray[][];
+            String input = "";
+            input = in1.readLine();
+            StringTokenizer line = new StringTokenizer(input);
+            no_attr = line.countTokens()-1;
+            fileArray = new String[28][no_attr+1];
+            
+            for(int i=0;i&lt;=no_attr;i++)
+            {
+                fileArray[0][i] = line.nextToken();
+            }
+            
+            while(true)
+            {
+                input = in1.readLine();
+                if(input == null) break;
+                line = new StringTokenizer(input);
+                no_row++;
+                for(int i=0;i&lt;=no_attr;i++)
+                fileArray[no_row][i] = line.nextToken();
+            }
+            
+            for(int i=0;i&lt;28;i++)
+            {
+                for(int j=0;j&lt;5;j++)
+                {
+                    System.out.print(fileArray[i][j]+" ");
+                }
+                System.out.println();
+            }
+            intfinalT[][] = new int[28][2];
+            /*Since we need only the price and discount we shall make an array of those two columns */
+            for(int i=0;i&lt;28;i++)
+            {
+                finalT[i][0] = Integer.parseInt(fileArray[i][2]);
+                finalT[i][1] = Integer.parseInt(fileArray[i][3]);
+            }
+            
+            for(int i=0;i&lt;6;i++)
+            {
+                System.out.print("For point "+(i+1)+": x coordinate = "+finalT[i][0]+" and y coordinate = "+finalT[i][1]+"\n");
+            }
+            
+            //Input has been taken, now the steps of clustering begin
+            //Making  the intial  distance matrix
+            doubledistMat [][] = new double[6][6];
+            double xy1 =0;
+            double xy2 = 0;
+            double xy3 = 0;
+            double xy33 = 0;
+            for(int i =0;i&lt;6;i++)
+            {
+                for(int j=0;j&lt;6;j++)
+                {
+                    
+                    xy1 = (finalT[i][0]-finalT[j][0])*(finalT[i][0]-finalT[j][0]);
+                    xy2 = (finalT[i][1]-finalT[j][1])*(finalT[i][1]-finalT[j][1]);
+                    xy3 = xy1+xy2;
+                    xy33 = Math.sqrt(xy3)/1000;
+                    distMat[i][j] = Math.round(xy33*100.0)/100.0;
+                }
+            }
+            
+            System.out.println("Intial Matrix for 6 points!!");
+            for(int i =0;i&lt;6;i++)
+            {
+                for(int j=0;j&lt;6;j++)
+                {
+                    System.out.print(distMat[i][j]+"  ");
+                }
+                System.out.println();
+            }
+            intpos=0, pos1=0;
+            int k=0;
+            String ch[] ={"A","B","C","D","E","F"};
+            do
+            {
+                //Finding the minimum:
+                double min = 25;
+                
+                
+                
+                
+                
+                for(int i =0;i&lt;6;i++)
+                {
+                    for(int j=0;j&lt;6;j++)
+                    {
+                        if(distMat[i][j]!=0.0)
+                        {
+                            if(distMat[i][j]&lt;min)
+                            {
+                                min = distMat[i][j];
+                                pos = i;
+                                pos1 = j;
+                            }
+                        }
+                    }
+                }
+                
+                ch[pos]+=ch[pos1];
+                ch[pos1] = null;
+                
+                System.out.println("Merging points at "+pos+" and "+pos1+" at distance= "+min);
+                
+                for(int i=0;i&lt;ch.length;i++)
+                {
+                    if(ch[i]!=null)
+                    {
+                        System.out.print("{"+ch[i]+"}\t");
+                    }
+                }
+                System.out.println();
+                
+                for(int j=0;j&lt;3;j++)
+                {
+                    if(distMat[j][pos]&lt;distMat[j][pos1])
+                    {
+                        distMat[j][pos]=distMat[j][pos];
+                    }
+                    else
+                    {
+                        distMat[j][pos] = distMat[j][pos1];
+                    }
+                    distMat[pos][j] = distMat[j][pos];
+                }
+                for(int j=3;j&lt;6;j++)
+                {
+                    if(distMat[pos][j]&lt;distMat[pos1][j])
+                    {
+                        distMat[pos][j]=distMat[pos][j];
+                    }
+                    else
+                    {
+                        distMat[pos][j]=distMat[pos1][j];
+                    }
+                    distMat[j][pos] = distMat[pos][j];
+                }
+                
+                for(int i =0;i&lt;6;i++)
+                {
+                    for(int j=0;j&lt;6;j++)
+                    {
+                        if(i==j)
+                        {
+                            distMat[i][j]=0.0;
+                        }
+                    }
+                }
+                for(int i =0;i&lt;6;i++)
+                {
+                    distMat[pos1][i]=distMat[i][pos1]=0;
+                }
+                k++;
+            }while(k&lt;5);
+        }
+        catch(Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+    }
+}
+
+//Output:
+Alprayzol Cold 200 5 affordable
+Lisinopril Allergy 700 10 expensive
+Singuyla Cancer 2000 25 expensive
+Glyburyyde Acidity 400 5 affordable
+Loraddep Acidity 2100 15 expensive
+Lovsaza Cold 100 15 cheap
+Veyntolin Acidity 300 10 affordable
+Sertrrralin Cancer 3000 10 expensive
+Lossdartan Acidity 70 5 cheap
+Lexasapro Cold 210 10 affordable
+Zoljhpidem Allergy 600 15 expensive
+Pravaklksta Cold 60 5 cheap
+Vysssvanse Allergy 700 10 expensive
+Serifinalins Cancer 4000 6 expensive
+Endocetrr Allergy 220 10 affordable
+Trazodo Acidity 50 15 cheap
+Citalop Acidity 60 4 cheap
+Lisinrtopril Cold 240 5 affordable
+Cephale Cancer 6000 15 expensive
+Diazepam Cold 200 20 affordable
+Glishizide Cancer 2500 5 expensive
+Hydryucod Acidity 260 5 affordable
+Atenooulol Acidity 230 5 affordable
+Lorazrfgep Cold 970 12 expensive
+Serovdquel Cancer 4200 20 expensive
+Atefynolal Acidity 200 5 affordable
+Lorasazyyp Cold 50 10 cheap
+Seyuroquyl Cancer 4500 25 expensive
+For point 1: x coordinate = 200 and y coordinate = 5
+For point 2: x coordinate = 700 and y coordinate = 10
+For point 3: x coordinate = 2000 and y coordinate = 25
+For point 4: x coordinate = 400 and y coordinate = 5
+For point 5: x coordinate = 2100 and y coordinate = 15
+For point 6: x coordinate = 100 and y coordinate = 15
+Intial Matrix for 6 points!!
+0.0  0.5  1.8  0.2  1.9  0.1
+0.5  0.0  1.3  0.3  1.4  0.6
+1.8  1.3  0.0  1.6  0.1  1.9
+0.2  0.3  1.6  0.0  1.7  0.3
+1.9  1.4  0.1  1.7  0.0  2.0
+0.1  0.6  1.9  0.3  2.0  0.0
+Merging points at 0 and 5 at distance= 0.1
+{AF}    {B}    {C}    {D}    {E}
+Merging points at 2 and 4 at distance= 0.1
+{AF}    {B}    {CE}    {D}
+Merging points at 0 and 3 at distance= 0.2
+{AFD}    {B}    {CE}
+Merging points at 0 and 1 at distance= 0.3
+{AFDB}    {CE}
+Merging points at 0 and 2 at distance= 1.3
+{AFDBCE}
