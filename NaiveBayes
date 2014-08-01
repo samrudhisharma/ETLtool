@@ -1,0 +1,277 @@
+/*
+Naïve bayes classification
+*/
+packagebayes;
+
+importjava.io.BufferedReader;
+importjava.io.File;
+importjava.io.FileInputStream;
+importjava.io.InputStreamReader;
+importjava.util.Scanner;
+importjava.util.StringTokenizer;
+
+public class Bayes {
+    public static void main(String[] args) {
+        
+        try{
+            
+            
+            intcountSym[][]=new int[4][3];
+            intcountPrice[][]=new int[3][3];
+            inttCheap,tAffordable,tExpensive;
+            doubleprobPrice[][]=new double[3][3];
+            doubleprobSym[][]=new double[4][3];
+            int price;
+            doublepc,pa,pe,lc,la,le;
+            
+            doubleptot,pct,pat,pet;
+            String finalOutput = "";
+            File f = new File(".");
+            String dest = f.getCanonicalPath()+File.separator+"destC.txt";
+            File fin1 = new File(dest);
+            FileInputStream fis1 = new FileInputStream(fin1);
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(fis1));
+            String aLine = null;
+            intno_attr = 0;
+            intno_row = 0;
+            String fileArray[][];
+            String input = "";
+            input = in1.readLine();
+            StringTokenizer line = new StringTokenizer(input);
+            no_attr = line.countTokens()-1;
+            fileArray = new String[28][no_attr+1];
+            
+            for(int i=0;i&lt;=no_attr;i++)
+            {
+                fileArray[0][i] = line.nextToken();
+            }
+            
+            while(true)
+            {
+                input = in1.readLine();
+                if(input == null) break;
+                line = new StringTokenizer(input);
+                no_row++;
+                for(int i=0;i&lt;=no_attr;i++)
+                fileArray[no_row][i] = line.nextToken();
+            }
+            
+            for(int i=0;i&lt;28;i++)
+            {
+                for(int j=0;j&lt;4;j++)
+                System.out.print(fileArray[i][j]+" ");
+                System.out.println();
+            }
+            
+            
+            for(int i=0;i&lt;28;i++)
+            {
+                if(Integer.parseInt(fileArray[i][2])&gt;=1 &&Integer.parseInt(fileArray[i][2])&lt;=100)
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countPrice[0][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countPrice[0][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countPrice[0][2]++;
+                }
+                else if(Integer.parseInt(fileArray[i][2])&gt;=101 &&Integer.parseInt(fileArray[i][2])&lt;=699)
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countPrice[1][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countPrice[1][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countPrice[1][2]++;
+                }
+                else
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countPrice[2][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countPrice[2][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countPrice[2][2]++;
+                }
+            }
+            tCheap=countPrice[0][0]+countPrice[1][0]+countPrice[2][0];
+            tAffordable=countPrice[0][1]+countPrice[1][1]+countPrice[2][1];
+            tExpensive=countPrice[0][2]+countPrice[1][2]+countPrice[2][2];
+            
+            //System.out.println(tCheap);
+            //System.out.println(tAffordable);
+            // System.out.println(tExpensive);
+            
+            for(int i=0;i&lt;3;i++)
+            {    for(int  j=0;j&lt;3;j++)
+                {
+                    probPrice[i][j]=countPrice[i][j]*1.0;
+                    if(j==0) probPrice[i][j]/=tCheap;
+                    if(j==1) probPrice[i][j]/=tAffordable;
+                    if(j==2) probPrice[i][j]/=tExpensive;
+                }
+            }
+            
+            
+            for(int i=0;i&lt;28;i++)
+            {
+                if(fileArray[i][1].compareTo("Acidity")==0)
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countSym[0][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countSym[0][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countSym[0][2]++;
+                }
+                else if(fileArray[i][1].compareTo("Allergy")==0)
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countSym[1][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countSym[1][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countSym[1][2]++;
+                }
+                else if (fileArray[i][1].compareTo("Cancer")==0)
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countSym[2][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countSym[2][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countSym[2][2]++;
+                }
+                
+                else
+                {
+                    if(fileArray[i][3].compareTo("cheap")==0)
+                    countSym[3][0]++;
+                    if(fileArray[i][3].compareTo("affordable")==0)
+                    countSym[3][1]++;
+                    if(fileArray[i][3].compareTo("expensive")==0)
+                    countSym[3][2]++;
+                }
+            }
+            
+            tCheap=countSym[0][0]+countSym[1][0]+countSym[2][0]+countSym[3][0];
+            tAffordable=countSym[0][1]+countSym[1][1]+countSym[2][1]+countSym[3][1];
+            tExpensive=countSym[0][2]+countSym[1][2]+countSym[2][2]+countSym[3][2];
+            
+            for(int i=0;i&lt;4;i++)
+            {    for(int  j=0;j&lt;3;j++)
+                {
+                    probSym[i][j]=countSym[i][j]*1.0;
+                    if(j==0) probSym[i][j]/=tCheap;
+                    if(j==1) probSym[i][j]/=tAffordable;
+                    if(j==2) probSym[i][j]/=tExpensive;
+                }
+            }
+            Scanner sc=new Scanner(System.in);
+            System.out.println("Enter tuple as medicine name,symptom and price");
+            String name=sc.next();
+            String symp=sc.next();
+            price=sc.nextInt();
+            
+            //String name= "ABC";
+            //String symp= "Acidity";
+            //price=8000;
+            
+            int index = 0;
+            if(symp.compareTo("Allergy")==0) index = 0;
+            else if(symp.compareTo("Acidity")==0) index =1 ;
+            else if(symp.compareTo("Cancer")==0) index=2;
+            else if(symp.compareTo("Cold")==0) index=3;
+            
+            if(price &gt;=1 && price &lt;=100)
+            {
+                pc = probPrice[0][0]*probSym[index][0];
+                pa = probPrice[0][1]*probSym[index][1];
+                pe = probPrice[0][2]*probSym[index][2];
+                
+            }
+            else if(price &gt;=101 && price &lt;=699)
+            {
+                pc = probPrice[1][0]*probSym[index][0];
+                pa = probPrice[1][1]*probSym[index][1];
+                pe = probPrice[1][2]*probSym[index][2];
+            }
+            else
+            {
+                pc = probPrice[2][0]*probSym[index][0];
+                pa = probPrice[2][1]*probSym[index][1];
+                pe = probPrice[2][2]*probSym[index][2];
+            }
+            lc=pc*tCheap/28;
+            la=pa*tAffordable/28;
+            le=pe*tExpensive/28;
+            
+            ptot = lc + la +le;
+            pct = lc/ptot;
+            pat = la/ptot;
+            pet = le/ptot;
+            
+            
+            
+            double max = pat;
+            int m = 2; //used as a counter
+            
+            if(max&lt;pct)
+            {
+                max = pct;
+                m=0;
+            }
+            if(max&lt;pet)
+            {
+                max = pet;
+                m=1;
+            }
+            
+            if(m==0)
+            System.out.println("Medicine is cheap");
+            else if(m==1)
+            System.out.println("Medicine is expensive");
+            else
+            System.out.println("Medicine is affordable");
+            in1.close();
+            
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+Output :
+Alprazolam Cold 200 affordable
+Lisinopril Allergy 700 expensive
+Singulair Cancer 2000 expensive
+Glyburide Acidity 400 affordable
+Lorazepam Acidity 2100 expensive
+Lovaza Cold 100 cheap
+Ventolin Acidity 300 affordable
+Sertraline Cancer 3000 expensive
+Losartan Acidity 70 cheap
+Lexapro Cold 210 affordable
+Zolpidem Allergy 600 expensive
+Pravastatin Cold 60 cheap
+Vyvanse Allergy 700 expensive
+Oxycodone Cancer 4000 expensive
+Endocet Allergy 220 affordable
+Trazodone Acidity 50 cheap
+Citalopram Acidity 60 cheap
+Lisinopril Cold 240 affordable
+Cephalexin Cancer 6000 expensive
+Diazepam Cold 200 affordable
+Glipizide Cancer 2500 expensive
+Hydrocodone Acidity 260 affordable
+Atenolol Acidity 230 affordable
+Lorazepam Cold 970 expensive
+Seroquel Cancer 4200 expensive
+Atenolal Acidity 200 affordable
+Lorazepom Cold 50 cheap
+Seroquyl Cancer 4500 expensive
+Enter tuple as medicine name,symptom and price
+ababa Allergy 10
+Medicine is cheap
