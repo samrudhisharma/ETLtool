@@ -1,0 +1,199 @@
+/*
+Apriori Algorithm
+ */
+package tryapriori;
+import java.util.*;
+public class TryApriori {
+    public static void main(String[] args) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter number of transactions:");
+            int tran = sc.nextInt();
+            System.out.println("Enter number of number of items:");
+            int itemNo = sc.nextInt();
+
+
+            String itemName[] = new String[itemNo];
+            System.out.println("Please Enter the item names");
+            for(int i=0;i<itemNo;i++)
+            {
+                itemName[i]=sc.next();
+            }
+            int itemset[][] = new int[tran][itemNo];
+            System.out.println("Enter whether items were bought for each transaction:");
+            for(int i=0;i<tran;i++)
+            {
+            for(int j=0;j<itemNo;j++)
+            {
+                System.out.println("Was '"+ itemName[j]+"' bought in transaction '"+(i+1)+"'");
+                System.out.println("Enter 1 for yes, 0 for no");
+                itemset[i][j]=sc.nextInt();
+            }
+            }
+
+             for(int i=0;i<tran;i++)
+            {
+            for(int j=0;j<itemNo;j++)
+            {
+                 System.out.print(itemset[i][j]+" ");
+            }
+            System.out.println();
+            }
+
+             int countItem[] = new int[itemNo];
+             for(int i=0;i<tran;i++)
+            {
+            for(int j=0;j<itemNo;j++)
+            {
+                if(itemset[i][j]==1)
+                countItem[j]++;
+            }
+            }
+
+             for(int j=0;j<itemNo;j++)
+            {
+        System.out.print(countItem[j]+"\n");
+            }
+
+
+             int max =0;
+                for(int i=0;i<itemNo;i++)
+		{
+			if(countItem[i]>max)
+			max=countItem[i];
+		
+		}
+
+             for(int i=0;i<itemNo;i++)
+             {
+                 if(countItem[i]==max)
+                 {
+                     System.out.println("Item "+itemName[i]+" was selected");
+
+                 }
+
+             }
+            int sup[][] = new int[itemNo][itemNo];
+            for(int i=0;i<tran;i++)
+            {
+            for(int j=0;j<itemNo;j++)
+            {
+            for(int k=0;k<itemNo;k++)
+            {
+                if(k!=j)
+                {
+                if(itemset[i][j]==1&&itemset[i][k]==1)
+                {
+                    itemset[i][j]++;
+
+                     sup[j][k]++;
+                }
+                }
+
+            }}}
+
+          int sup1[][] = new int[itemNo][itemNo];
+       /*  for(int j=0;j<itemNo;j++)
+            {
+            for(int k=0;k<itemNo;k++)
+            {
+
+                System.out.print(sup[j][k]);
+
+            }
+            System.out.println();
+            }*/
+       for(int j=0;j<itemNo;j++)
+            {
+            for(int k=0;k<itemNo;k++)
+            {
+                sup[j][k]++;
+
+            }
+
+            }
+
+          max =0;
+            for(int i=0;i<itemNo;i++)
+		{
+                for(int j=0;j<itemNo;j++)
+		{
+			if(sup[i][j]>=max)
+			max=sup[i][j];
+                }
+		}
+
+            System.out.println(max);
+         for(int j=0;j<itemNo;j++)
+            {
+            for(int k=0;k<itemNo;k++)
+            {
+                if(sup[j][k]>=max)
+                {
+                     System.out.println(itemName[j]+" and "+itemName[k]+" are selected");
+                }
+
+            }
+
+            }
+
+    }
+}
+Output: 
+Enter number of transactions:
+3
+Enter number of number of items:
+4
+Please Enter the item names
+a
+b
+c
+d
+Enter whether items were bought for each transaction:
+Was 'a' bought in transaction '1'
+Enter 1 for yes, 0 for no
+1
+Was 'b' bought in transaction '1'
+Enter 1 for yes, 0 for no
+1
+Was 'c' bought in transaction '1'
+Enter 1 for yes, 0 for no
+0
+Was 'd' bought in transaction '1'
+Enter 1 for yes, 0 for no
+1
+Was 'a' bought in transaction '2'
+Enter 1 for yes, 0 for no
+1
+Was 'b' bought in transaction '2'
+Enter 1 for yes, 0 for no
+1
+Was 'c' bought in transaction '2'
+Enter 1 for yes, 0 for no
+0
+Was 'd' bought in transaction '2'
+Enter 1 for yes, 0 for no
+0
+Was 'a' bought in transaction '3'
+Enter 1 for yes, 0 for no
+1
+Was 'b' bought in transaction '3'
+Enter 1 for yes, 0 for no
+1
+Was 'c' bought in transaction '3'
+Enter 1 for yes, 0 for no
+1
+Was 'd' bought in transaction '3'
+Enter 1 for yes, 0 for no
+0
+1 1 0 1 
+1 1 0 0 
+1 1 1 0 
+3
+3
+1
+1
+Item a was selected
+Item b was selected
+4
+a and b are selected
+
