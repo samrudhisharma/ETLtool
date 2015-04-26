@@ -1,7 +1,7 @@
 ETLtool
 =======
 
-This repository contains the Java programs of the data mining algorithms implemented as a part of the Extract Transform and Load project.It is developed for a Data Warehouse consisting of medicine and pharmaceutical data corpus.
+This repository contains the Java programs of the data mining algorithms implemented as a part of the Extract Transform and Load project.It is developed as a part of the Data Warehouse and Mining course (DWM). It consists of a pharmaceutical data corpus.
 
 The tool was designed to extract data from various sources such as Access, Excel, SQLite and Text Files, and then apply various transformations and finally load the data in the data warehouse.
 
